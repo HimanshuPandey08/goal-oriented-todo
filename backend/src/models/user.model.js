@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { EMAIL_REGEX } = require("../utils/regex");
 
 
 
@@ -13,7 +14,7 @@ const userSchema = new mongoose.Schema({
         type:String,
         required:[true , "Email is required"],
         unique:[true, "Email Already Exists"],
-        match: [/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Please fill a valid email address"],
+        match: [EMAIL_REGEX, "Please fill a valid email address"],
         trim : true ,
         lowercase: true
     },
