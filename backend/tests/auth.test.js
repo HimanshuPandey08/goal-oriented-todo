@@ -3,6 +3,7 @@ const request = require("supertest");
 const mongoose = require("mongoose");
 const { MongoMemoryServer } = require("mongodb-memory-server");
 const app = require("../src/app");
+const { authUser } = require("../src/middleware/auth.middleware")
 
 let mongoServer;
 
@@ -258,5 +259,75 @@ describe("Auth Api",()=>{
             .toContain("token=");
     });
 
+    const express = require("express");
+    const testApp = express();
+    const cookieParser = require("cookie-parser");
+    const jwt = require("jsonwebtoken");
 
+    testApp.use(cookieParser());
+    testApp.use(express.json());
+
+    testApp.get("/protected", authUser, (req, res) => {
+        res.status(200).json({
+            user: req.user
+        });
+    });
+
+    test("should reject request when token is missing", async () => {
+        const response = await request(testApp)
+            .get("/protected");
+
+        expect(response.statusCode).toBe(401);
+        expect(response.body.message)
+            .toBe("Token is missing");
+    });
+
+    const token = jwt.sign(
+        {
+            id: "123",
+            username: "testuser"
+        },
+        process.env.JWT_SECRET,
+        {
+            expiresIn: "1d"
+        }
+    );
+
+    test("Valid token allows request to continue ", async () => {
+        const response = await request(testApp)
+            .get("/protected")
+            .set("Cookie" ,`token=${token}`)
+        expect(response.statusCode).toBe(200);
+        expect(response.body.user.id)
+            .toBe("123");
+        expect(response.body.user.username)
+            .toBe("testuser");
+    });
+
+
+    test("should reject the request wehn token is invalid", async () => {
+        const response = await request(testApp)
+            .get("/protected")
+            .set("Cookie" ,`token=invalid-Token`)
+        expect(response.statusCode).toBe(401);
+        expect(response.body.message).toBe("Token is invalid")
+    });
+
+    const expiredToken = jwt.sign(
+        {
+            id: "123",
+            username: "testuser"
+        },
+        process.env.JWT_SECRET,
+        {
+            expiresIn: "-1s"
+        }
+    );
+    test("should reject the request wehn token is expired", async () => {
+        const response = await request(testApp)
+            .get("/protected")
+            .set("Cookie" ,`token=${expiredToken}`)
+        expect(response.statusCode).toBe(401);
+        expect(response.body.message).toBe("Token is invalid")
+    });
 })
