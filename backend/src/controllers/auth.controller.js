@@ -83,7 +83,6 @@ async function loginUserController(req,res) {
         }
         const user = await userModel.findOne({email})
         if(!user){
-            console.log("user not found")
             return res.status(404).json({message : "User Dosn't Exists"})
         }
 
@@ -91,6 +90,7 @@ async function loginUserController(req,res) {
         if(!isPasswordSame){
             return res.status(401).json({message :"Passowrd is incorrect"})
         }
+
         const token = jwt.sign(
             { id: user._id, username:user.username },
             process.env.JWT_SECRET,
