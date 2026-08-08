@@ -14,7 +14,12 @@ async function registerUserController(req,res) {
         }
 
         if(!(EMAIL_REGEX.test(email))){
-            return res.status(400).json({message : "Email is invalid "})
+            return res.status(400).json({message : "Email is invalid"})
+        }
+
+        const isPasswordValid = password.length >=6 
+        if(!isPasswordValid){
+            return res.status(400).json({message : "Password should be atleat 6 character long."})
         }
 
         const hash = await encypt(password)
