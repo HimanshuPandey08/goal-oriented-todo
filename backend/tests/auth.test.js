@@ -30,7 +30,6 @@ describe("Auth Api",()=>{
             password: "1234567"
         })
         expect(response.statusCode).toBe(201);
-
         expect(response.body.message)
         .toBe("User Registered Successfully");
 
@@ -104,7 +103,6 @@ describe("Auth Api",()=>{
         expect(response.body.message).toBe("Password should be atleat 6 character long.");
     })
 
-
     test("should reject registration when user laready exists with username", async () => {
         const response = await request(app)
         .post("/api/auth/register")
@@ -155,4 +153,110 @@ describe("Auth Api",()=>{
         expect(response.headers["set-cookie"][0])
             .toContain("token=");
     });
+
+
+    // login testing 
+
+
+    test("Login api should response", async () => {
+        const response = await request(app).post("/api/auth/login").send({
+            email: "test@example.com",
+            password: "1234567"
+        })
+        expect(response.statusCode).toBe(200);
+        expect(response.body.message)
+        .toBe("User Loggined Successfully");
+    })
+
+    test("should reject login when email is missing", async () => {
+        const response = await request(app)
+        .post("/api/auth/login")
+        .send({
+            password:"email is missing"
+        })
+        expect(response.statusCode).toBe(400)
+        expect(response.body.message).toBe("Email is missing")
+    })
+
+    test("should reject login when password is missing", async () => {
+        const response = await request(app)
+        .post("/api/auth/login")
+        .send({
+            email:"test@gmail.com"
+        })
+        expect(response.statusCode).toBe(400)
+        expect(response.body.message).toBe("Password is missing")
+    })
+
+    test("should reject login when email is incorrect formate", async () => {
+        const response = await request(app)
+        .post("/api/auth/login")
+        .send({
+            email:"email is incorrect",
+            password:"email is incorrect"
+        })
+        expect(response.statusCode).toBe(400)
+        expect(response.body.message).toBe("Email is invalid")
+    })
+
+    test("should reject login when password is incorrect formate", async () => {
+        const response = await request(app)
+        .post("/api/auth/login")
+        .send({
+            email:"test@gmail.com",
+            password:"pass"
+        })
+        expect(response.statusCode).toBe(400)
+        expect(response.body.message).toBe("Password is invalid")
+    })
+
+    test("should reject login when there is no user found", async () => {
+        const response = await request(app)
+        .post("/api/auth/login")
+        .send({
+            email:"TestUserNotExists@gmail.com",
+            password:"1234567"
+        })
+        expect(response.statusCode).toBe(404)
+        expect(response.body.message).toBe("User Dosn't Exists")
+    })
+
+    test("should reject login wehn password is incorrect",async () => {
+        const response= await request(app)
+        .post("/api/auth/login")
+        .send({
+            email: "test@example.com",
+            password: "wrong password"
+        })
+
+        expect(response.statusCode).toBe(401)
+        expect(response.body.message).toBe("Passowrd is incorrect")
+    })
+
+    test("should not return password in response", async () => {
+        const response = await request(app)
+            .post("/api/auth/login")
+            .send({
+                email: "test@example.com",
+                password: "1234567"
+            });
+        expect(response.statusCode).toBe(200);
+        expect(response.body.user)
+            .not.toHaveProperty("password");
+    });
+
+    test("should return authentication cookie", async () => {
+        const response = await request(app)
+            .post("/api/auth/login")
+            .send({
+                email: "test@example.com",
+                password: "1234567"
+            });
+        expect(response.statusCode).toBe(200);
+        expect(response.headers["set-cookie"]).toBeDefined();
+        expect(response.headers["set-cookie"][0])
+            .toContain("token=");
+    });
+
+
 })
