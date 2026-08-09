@@ -10,6 +10,8 @@ goalRouter.post("/" , authMiddleware.authUser, goalController.createGoalControll
 
 goalRouter.get("/" , authMiddleware.authUser, goalController.getAllGoalsController  )
 
+goalRouter.get("/:id" , authMiddleware.authUser, goalController.getGoalByIdController  )
+
 
 
 
