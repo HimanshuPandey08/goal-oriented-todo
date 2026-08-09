@@ -330,4 +330,69 @@ describe("Auth Api",()=>{
         expect(response.statusCode).toBe(401);
         expect(response.body.message).toBe("Token is invalid")
     });
+
+
+
+    // Get Me testing
+
+    test("should fetch authenticated user successfully", async () => {
+
+        const user = await require("../src/models/user.model").create({
+            username: "getmetest",
+            email: "getme@example.com",
+            password: "hashedpassword"
+        });
+
+        const token = jwt.sign(
+            {
+                id: user._id,
+                username: user.username
+            },
+            process.env.JWT_SECRET,
+            {
+                expiresIn: "1d"
+            }
+        );
+
+        const response = await request(app)
+            .get("/api/auth/get-me")
+            .set("Cookie", `token=${token}`);
+
+        expect(response.statusCode).toBe(200);
+        expect(response.body.message)
+            .toBe("User Fetched successfully");
+        expect(response.body.user.username)
+            .toBe("getmetest");
+        expect(response.body.user.email)
+            .toBe("getme@example.com");
+        expect(response.body.user)
+            .not.toHaveProperty("password");
+    });
+
+
+    test("should return 404 when authenticated user does not exist", async () => {
+
+        const fakeToken = jwt.sign(
+            {
+                id: new mongoose.Types.ObjectId(),
+                username: "deleteduser"
+            },
+            process.env.JWT_SECRET,
+            {
+                expiresIn: "1d"
+            }
+        );
+
+        const response = await request(app)
+            .get("/api/auth/get-me")
+            .set("Cookie", `token=${fakeToken}`);
+            
+        expect(response.statusCode).toBe(404);
+        expect(response.body.message)
+            .toBe("user not found");
+    });
+
+
+
+
 })
