@@ -37,6 +37,8 @@ beforeAll(async () => {
             expiresIn: "1d"
         }
     );
+
+
 });
 
 
@@ -87,7 +89,7 @@ test("should create a goal with proper input but without description ", async ()
     const response = await request(app)
     .post("/api/goals")
     .send({
-        title:"Create a goal",
+        title:"Create a goal 2",
     })
     .set("Cookie", `token=${token}`);
 
@@ -95,3 +97,24 @@ test("should create a goal with proper input but without description ", async ()
     expect(response.body.goal.description).toBeUndefined();
     expect(response.body.message).toBe("Goal created successfully")
 })
+
+
+
+
+
+// testing get all goals api
+
+
+test("should gives all goals of the particular user", async () => {
+    
+    const response = await request(app)
+    .get("/api/goals")
+    .set("Cookie", `token=${token}`);
+
+    expect(response.statusCode).toBe(200)
+    expect(response.body.message).toBe("Goals Fectched successfully")
+    expect(response.body.goals[0].title).toBe("Create a goal")
+    expect(response.body.goals[1].title).toBe("Create a goal 2")
+})
+
+

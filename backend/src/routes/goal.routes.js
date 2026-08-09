@@ -8,6 +8,8 @@ const goalRouter = express.Router();
 
 goalRouter.post("/" , authMiddleware.authUser, goalController.createGoalController  )
 
+goalRouter.get("/" , authMiddleware.authUser, goalController.getAllGoalsController  )
+
 
 
 

@@ -24,5 +24,17 @@ async function createGoalController(req,res) {
     })
 }
 
+async function getAllGoalsController(req,res) {
+    
+    const userId = req.user.id;
 
-module.exports = { createGoalController  }
+    const goals = await goalModel.find({userId});
+    
+    res.status(200).json({
+        message: "Goals Fectched successfully",
+        goals
+    })
+}
+
+
+module.exports = { createGoalController , getAllGoalsController }
