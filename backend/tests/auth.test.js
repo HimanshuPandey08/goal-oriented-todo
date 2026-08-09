@@ -393,6 +393,28 @@ describe("Auth Api",()=>{
     });
 
 
+    test("should logout user successfully", async () => {
+        
+        const response = await request(app)
+        .get("/api/auth/logout")
+        .set("Cookie", `token=${token}`);
+
+        expect(response.statusCode).toBe(200);
+        expect(response.body.message)
+        .toBe("User Logged out successfully");
+    })
+
+    test("should clear authentication cookie", async () => {
+
+        const response = await request(app)
+        .get("/api/auth/logout")
+        .set("Cookie", `token=${token}`);
+
+        expect(response.statusCode).toBe(200);
+        expect(response.headers["set-cookie"]).toBeDefined();
+        expect(response.headers["set-cookie"][0])
+        .toContain("token=;");
+    });
 
 
 })
