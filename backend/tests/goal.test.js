@@ -118,3 +118,56 @@ test("should gives all goals of the particular user", async () => {
 })
 
 
+
+// get goal by Id 
+
+
+test("should gives goal of the particular goal", async () => {
+
+    const goal = await goalModel.create({
+        title: "Get Single Goal",
+        description: "Testing get goal by id",
+        userId: testUser._id
+    });
+    const response = await request(app)
+    .get(`/api/goals/${goal._id}`)
+    .set("Cookie", `token=${token}`);
+
+    expect(response.statusCode).toBe(200)
+    expect(response.body.message).toBe("Goal Found successfully")
+
+})
+
+test("should not gives goal of the particular goal", async () => {
+
+    const fakeGoalId = new mongoose.Types.ObjectId();
+
+    const response = await request(app)
+    .get(`/api/goals/${fakeGoalId}`)
+    .set("Cookie", `token=${token}`);
+
+    expect(response.statusCode).toBe(404)
+    expect(response.body.message).toBe("Goal not found")
+
+})
+
+test("should gives goal of the particular goal", async () => {
+
+    const goal = await goalModel.create({
+        title: "Get Single Goal",
+        description: "Testing get goal by id",
+        userId: testUser._id
+    });
+    const response = await request(app)
+    .get(`/api/goals/So much worng id formate`)
+    .set("Cookie", `token=${token}`);
+
+    expect(response.statusCode).toBe(400)
+    expect(response.body.message).toBe("Invalid Goal id Formate")
+
+})
+
+
+
+
+
