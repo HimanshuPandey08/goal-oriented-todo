@@ -37,7 +37,6 @@ async function getAllGoalsController(req,res) {
     })
 }
 
-
 async function getGoalByIdController(req,res) {
     
     const goalId = req.params.id;
@@ -61,7 +60,6 @@ async function getGoalByIdController(req,res) {
     })
 
 }
-
 
 async function editGoalByIdController(req,res) {
     
