@@ -57,5 +57,64 @@ async function getAllMilestonesController(req,res) {
 
 }
 
+async function editMilestoneByIdController(req,res) {
+    
+    const goalId = req.params.goalId;
+    const milestoneId =  req.params.milestoneId;
+    const userId = req.user.id;
+    const { title , description , completed } = req.body
+    const update = {}
 
-module.exports = { createMilestoneController , getAllMilestonesController }
+    if(title !== undefined){
+        update.title = title
+    }
+    if(description !== undefined){
+        update.description = description
+    }
+    if(completed !== undefined){
+        update.completed = completed
+    }
+
+    const milestone = await milestoneModel.findOneAndUpdate(
+        { _id:milestoneId,
+            userId,
+            goalId },
+        update,
+        { returnDocument: "after" }
+    )
+
+    if(!milestone){
+        return res.status(404).json({message: "milestone not found"})
+    }
+
+    res.status(200).json({ 
+        message:"milestone updated successfully",
+        milestone
+    })
+}
+
+async function deleteMilestoneByIdController(req,res) {
+    
+    const goalId = req.params.goalId;
+    const milestoneId =  req.params.milestoneId;
+    const userId = req.user.id;
+
+    const milestone = await milestoneModel.findOneAndDelete(
+        { _id:milestoneId,
+            userId,
+            goalId })
+    if(!milestone){
+        return res.status(404).json({message: "milestone not found"})
+    }
+
+    res.status(200).json({ 
+        message:"milestone Deleted successfully"
+    })
+}
+
+
+module.exports = { createMilestoneController ,
+                 getAllMilestonesController ,
+                 editMilestoneByIdController,
+                deleteMilestoneByIdController
+                }

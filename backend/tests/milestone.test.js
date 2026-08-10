@@ -168,14 +168,206 @@ test("should fetch all milestones of the particular goal", async () => {
 });
 
 
+// update milestone by id api testing 
+
+beforeEach(async () => {
+    await milestoneModel.deleteMany({});
+});
+
+
+test("should update milestone successfully", async () => {
+
+    const milestone = await milestoneModel.create({
+        title: "Old Title",
+        description: "Old Description",
+        userId: testUser._id,
+        goalId: testGoal._id
+    });
+
+    const response = await request(app)
+        .patch(`/api/goals/${testGoal._id}/milestones/${milestone._id}`)
+        .send({
+            title: "Updated Title",
+            description: "Updated Description",
+            completed: true
+        })
+        .set("Cookie", `token=${token}`);
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body.message)
+        .toBe("milestone updated successfully");
+    expect(response.body.milestone.title)
+        .toBe("Updated Title");
+    expect(response.body.milestone.description)
+        .toBe("Updated Description");
+    expect(response.body.milestone.completed)
+        .toBe(true);
+});
+
+
+test("should not update milestone when milestone does not belong to the user", async () => {
+
+    const anotherUser = await userModel.create({
+        username: "anotheruser",
+        email: "anotheruser@example.com",
+        password: "hashedpassword"
+    });
+
+    const anotherMilestone = await milestoneModel.create({
+        title: "Another User Milestone",
+        description: "Another user milestone",
+        userId: anotherUser._id,
+        goalId: testGoal._id
+    });
+
+    const response = await request(app)
+        .patch(`/api/goals/${testGoal._id}/milestones/${anotherMilestone._id}`)
+        .send({
+            title: "Unauthorized Update"
+        })
+        .set("Cookie", `token=${token}`);
+
+    expect(response.statusCode).toBe(404);
+    expect(response.body.message)
+        .toBe("milestone not found");
+});
+
+
+test("should not update milestone when goal does not match", async () => {
+
+    const anotherGoal = await goalModel.create({
+        title: "Another Goal",
+        description: "Another goal",
+        userId: testUser._id
+    });
+
+    const milestone = await milestoneModel.create({
+        title: "Test Milestone",
+        description: "Test milestone",
+        userId: testUser._id,
+        goalId: testGoal._id
+    });
+
+    const response = await request(app)
+        .patch(`/api/goals/${anotherGoal._id}/milestones/${milestone._id}`)
+        .send({
+            title: "Unauthorized Update"
+        })
+        .set("Cookie", `token=${token}`);
+
+    expect(response.statusCode).toBe(404);
+    expect(response.body.message)
+        .toBe("milestone not found");
+});
+
+
+test("should not update milestone when milestone does not exist", async () => {
+
+    const fakeMilestoneId = new mongoose.Types.ObjectId();
+
+    const response = await request(app)
+        .patch(`/api/goals/${testGoal._id}/milestones/${fakeMilestoneId}`)
+        .send({
+            title: "Updated Title"
+        })
+        .set("Cookie", `token=${token}`);
+
+    expect(response.statusCode).toBe(404);
+    expect(response.body.message)
+        .toBe("milestone not found");
+});
 
 
 
 
+// delete milestone by id api testing 
+
+beforeEach(async () => {
+    await milestoneModel.deleteMany({});
+});
 
 
+test("should delete milestone successfully", async () => {
+
+    const milestone = await milestoneModel.create({
+        title: "Delete Milestone",
+        description: "Milestone to delete",
+        userId: testUser._id,
+        goalId: testGoal._id
+    });
+
+    const response = await request(app)
+        .delete(`/api/goals/${testGoal._id}/milestones/${milestone._id}`)
+        .set("Cookie", `token=${token}`);
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body.message)
+        .toBe("milestone Deleted successfully");
+});
 
 
+test("should not delete milestone belonging to another user", async () => {
+
+    const anotherUser = await userModel.create({
+        username: "deleteanotheruser",
+        email: "deleteanother@example.com",
+        password: "hashedpassword"
+    });
+
+    const milestone = await milestoneModel.create({
+        title: "Another User Milestone",
+        description: "Should not be deleted",
+        userId: anotherUser._id,
+        goalId: testGoal._id
+    });
+
+    const response = await request(app)
+        .delete(`/api/goals/${testGoal._id}/milestones/${milestone._id}`)
+        .set("Cookie", `token=${token}`);
+
+    expect(response.statusCode).toBe(404);
+    expect(response.body.message)
+        .toBe("milestone not found");
+});
+
+
+test("should not delete milestone when goal does not match", async () => {
+
+    const anotherGoal = await goalModel.create({
+        title: "Another Goal",
+        description: "Different goal",
+        userId: testUser._id
+    });
+
+    const milestone = await milestoneModel.create({
+        title: "Test Milestone",
+        description: "Belongs to original goal",
+        userId: testUser._id,
+        goalId: testGoal._id
+    });
+
+    const response = await request(app)
+        .delete(`/api/goals/${anotherGoal._id}/milestones/${milestone._id}`)
+        .set("Cookie", `token=${token}`);
+
+    expect(response.statusCode).toBe(404);
+    expect(response.body.message)
+        .toBe("milestone not found");
+});
+
+
+test("should not delete milestone when milestone does not exist", async () => {
+
+    const fakeMilestoneId = new mongoose.Types.ObjectId();
+
+    const response = await request(app)
+        .delete(`/api/goals/${testGoal._id}/milestones/${fakeMilestoneId}`)
+        .set("Cookie", `token=${token}`);
+
+    expect(response.statusCode).toBe(404);
+    expect(response.body.message)
+        .toBe("milestone not found");
+});
 
 
 
