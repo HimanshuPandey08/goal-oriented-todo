@@ -11,6 +11,10 @@ milestoneRouter.post("/:goalId/milestones" , authRouter.authUser , milestoneCont
 
 milestoneRouter.get("/:goalId/milestones" , authRouter.authUser , milestoneController.getAllMilestonesController )
 
+milestoneRouter.patch("/:goalId/milestones/:milestoneId" , authRouter.authUser , milestoneController.editMilestoneByIdController )
+
+milestoneRouter.delete("/:goalId/milestones/:milestoneId" , authRouter.authUser , milestoneController.deleteMilestoneByIdController )
+
 
 
 module.exports = milestoneRouter
