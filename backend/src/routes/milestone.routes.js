@@ -9,6 +9,7 @@ const milestoneRouter = express.Router();
 
 milestoneRouter.post("/:goalId/milestones" , authRouter.authUser , milestoneController.createMilestoneController )
 
+milestoneRouter.get("/:goalId/milestones" , authRouter.authUser , milestoneController.getAllMilestonesController )
 
 
 

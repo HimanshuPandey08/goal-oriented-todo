@@ -15,11 +15,6 @@ beforeAll(async () => {
     await mongoose.connect(uri);
 });
 
-afterAll(async () => {
-    await mongoose.connection.dropDatabase();
-    await mongoose.connection.close();
-    await mongoServer.stop();
-});
 
 
 describe("Auth Api",()=>{
@@ -418,3 +413,12 @@ describe("Auth Api",()=>{
 
 
 })
+
+
+
+
+afterAll(async () => {
+    await mongoose.connection.dropDatabase();
+    await mongoose.connection.close();
+    await mongoServer.stop();
+});
