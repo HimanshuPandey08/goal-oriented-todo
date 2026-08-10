@@ -12,6 +12,10 @@ goalRouter.get("/" , authMiddleware.authUser, goalController.getAllGoalsControll
 
 goalRouter.get("/:id" , authMiddleware.authUser, goalController.getGoalByIdController  )
 
+goalRouter.patch("/:id" , authMiddleware.authUser, goalController.editGoalByIdController  )
+
+goalRouter.delete("/:id" , authMiddleware.authUser, goalController.deleteGoalByIdController  )
+
 
 
 
