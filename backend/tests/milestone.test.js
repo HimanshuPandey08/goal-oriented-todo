@@ -45,14 +45,8 @@ beforeAll(async () => {
     );
 });
 
-afterAll(async () => {
 
-    await mongoose.connection.dropDatabase();
-    await mongoose.connection.close();
-    await mongoServer.stop();
-});
-
-
+// create milestone api testing
 
 test("should create milestone with proper input", async () => {
 
@@ -128,4 +122,68 @@ test("should reject milestone when goal belongs to another user", async () => {
 
     expect(response.statusCode).toBe(404);
     expect(response.body.message).toBe("Goal not found");
+});
+
+
+
+
+// get all milestones api testing
+
+beforeEach(async () => {
+    await milestoneModel.deleteMany({});
+});
+
+test("should fetch all milestones of the particular goal", async () => {
+
+    const milestone1 = await milestoneModel.create({
+        title: "Complete JavaScript",
+        description: "Learn JavaScript",
+        userId: testUser._id,
+        goalId: testGoal._id
+    });
+
+    const milestone2 = await milestoneModel.create({
+        title: "Complete React",
+        description: "Learn React",
+        userId: testUser._id,
+        goalId: testGoal._id
+    });
+
+    const response = await request(app)
+        .get(`/api/goals/${testGoal._id}/milestones`)
+        .set("Cookie", `token=${token}`);
+
+    expect(response.statusCode).toBe(200);
+
+    expect(response.body.message)
+        .toBe("All milestone fetched Successfully");
+
+    expect(response.body.milestones).toHaveLength(2);
+
+    expect(response.body.milestones[0].title)
+        .toBe("Complete JavaScript");
+
+    expect(response.body.milestones[1].title)
+        .toBe("Complete React");
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+afterAll(async () => {
+
+    await mongoose.connection.dropDatabase();
+    await mongoose.connection.close();
+    await mongoServer.stop();
 });

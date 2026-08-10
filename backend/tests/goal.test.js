@@ -43,13 +43,6 @@ beforeAll(async () => {
 
 
 
-afterAll(async () => {
-
-    await mongoose.connection.dropDatabase();
-    await mongoose.connection.close();
-    await mongoServer.stop();
-});
-
 
 
 test("should create a goal with proper input", async () => {
@@ -304,3 +297,11 @@ test("should not Delete if goal not found", async () => {
 })
 
 
+
+
+afterAll(async () => {
+
+    await mongoose.connection.dropDatabase();
+    await mongoose.connection.close();
+    await mongoServer.stop();
+});

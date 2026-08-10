@@ -40,5 +40,22 @@ async function createMilestoneController(req,res) {
 
 }
 
+async function getAllMilestonesController(req,res) {
+    
+    const goalId = req.params.goalId;
+    const userId = req.user.id
 
-module.exports = { createMilestoneController }
+    const milestones = await milestoneModel.find({
+        userId,
+        goalId
+    })
+
+    res.status(200).json({
+        message : "All milestone fetched Successfully",
+        milestones
+    })
+
+}
+
+
+module.exports = { createMilestoneController , getAllMilestonesController }
