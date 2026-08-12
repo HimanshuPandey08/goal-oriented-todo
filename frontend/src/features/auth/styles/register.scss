@@ -1,0 +1,126 @@
+/* =========================
+   REGISTER PAGE
+   ========================= */
+
+.auth-page.register-page {
+    min-height: 100vh;
+
+    background:
+        radial-gradient(
+            ellipse at 50% 45%,
+            rgba(255, 255, 255, 0.018),
+            transparent 38%
+        ),
+        #050505;
+}
+
+
+/* =========================
+   REGISTER CARD
+   ========================= */
+
+.register-page .auth-card {
+    max-width: 430px;
+}
+
+
+/* =========================
+   REGISTER TITLE
+   ========================= */
+
+.register-page .auth-title {
+    margin-bottom: 31px;
+}
+
+
+/* =========================
+   REGISTER FORM
+   ========================= */
+
+.register-page .auth-form {
+    gap: 19px;
+}
+
+
+/* =========================
+   REGISTER INPUTS
+   ========================= */
+
+.register-page .form-group input {
+    height: 52px;
+}
+
+
+/* =========================
+   REGISTER BUTTON
+   ========================= */
+
+.register-page .auth-button {
+    margin-top: 5px;
+}
+
+
+/* =========================
+   REGISTER SWITCH
+   ========================= */
+
+.register-page .auth-switch {
+    margin-top: 23px;
+}
+
+
+/* =========================
+   TABLET
+   ========================= */
+
+@media (max-width: 700px) {
+
+    .register-page .auth-title {
+        margin-bottom: 28px;
+    }
+
+
+    .register-page .auth-form {
+        gap: 18px;
+    }
+}
+
+
+/* =========================
+   MOBILE
+   ========================= */
+
+@media (max-width: 480px) {
+
+    .register-page .auth-title {
+        margin-bottom: 26px;
+    }
+
+
+    .register-page .auth-form {
+        gap: 17px;
+    }
+
+
+    .register-page .form-group input {
+        height: 50px;
+    }
+
+
+    .register-page .auth-switch {
+        margin-top: 21px;
+    }
+}
+
+
+/* =========================
+   SMALL PHONES
+   ========================= */
+
+@media (max-width: 360px) {
+
+    .register-page .auth-form {
+        gap: 16px;
+    }
+
+}

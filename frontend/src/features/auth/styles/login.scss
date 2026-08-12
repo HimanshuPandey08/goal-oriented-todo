@@ -1,0 +1,59 @@
+/* =========================
+   LOGIN PAGE
+   ========================= */
+
+.auth-page.login-page {
+    min-height: 100vh;
+
+    background:
+        radial-gradient(
+            ellipse at 50% 45%,
+            rgba(255, 255, 255, 0.018),
+            transparent 38%
+        ),
+        #050505;
+}
+
+
+/* =========================
+   LOGIN CARD
+   ========================= */
+
+.login-page .auth-card {
+    max-width: 430px;
+}
+
+
+/* =========================
+   LOGIN TITLE
+   ========================= */
+
+.login-page .auth-title {
+    margin-bottom: 32px;
+}
+
+
+/* =========================
+   LOGIN FORM
+   ========================= */
+
+.login-page .auth-form {
+    gap: 20px;
+}
+
+
+/* =========================
+   LOGIN MOBILE
+   ========================= */
+
+@media (max-width: 480px) {
+
+    .login-page .auth-title {
+        margin-bottom: 27px;
+    }
+
+
+    .login-page .auth-form {
+        gap: 18px;
+    }
+}

@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { Link } from "react-router"
 import "../auth.form.scss"
+import "../styles/login.scss"
 import { useAuth } from "../hooks/useAuth"
 import { useNavigate } from "react-router"
 
@@ -70,7 +71,7 @@ const Login = () => {
                         <Link to="/register"> Register</Link>
                     </p>
 
-                    {error && <p>{error}</p>}
+                    {error && <p className="auth-error">{error}</p>}
 
                 </div>
 

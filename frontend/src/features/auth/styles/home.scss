@@ -1,0 +1,299 @@
+// ============================================================
+// Theme tokens — shared visual language for Home + Dashboard
+// ============================================================
+:root {
+  --ink: #fafafa;
+  --muted: #a7a6a6;
+  --nav: #b6b5b5;
+  --strip: #8b8a8a;
+  --pill: #ffffff;
+  --pill-ink: #050505;
+  --stage-bg: #050505;
+}
+
+.stage {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow: hidden;
+  background: var(--stage-bg);
+  font-family: "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+  color: var(--ink);
+
+  // --------------------------------------------------------
+  // Background video plate
+  // --------------------------------------------------------
+  .plate {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(
+          to bottom,
+          rgba(5, 5, 5, 0) 78.8%,
+          rgba(5, 5, 5, 0.45) 81.4%,
+          rgba(5, 5, 5, 0.84) 85.2%,
+          rgba(5, 5, 5, 0.96) 95%,
+          #050505 100%
+        ),
+        linear-gradient(
+          to right,
+          #050505 0%,
+          transparent 18%,
+          transparent 82%,
+          #050505 100%
+        );
+    }
+
+    &-video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: 60% center;
+      pointer-events: none;
+    }
+  }
+
+  // --------------------------------------------------------
+  // Topbar
+  // --------------------------------------------------------
+  .topbar {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: clamp(20px, 2.5vh, 32px) clamp(20px, 5vw, 75px);
+    animation: rise 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .brand-mark {
+    width: clamp(22px, 2.2vw, 31.5px);
+    height: auto;
+    display: block;
+  }
+  .feature-icon {
+      width: 20px;
+      height: 20px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border:
+          1px solid
+          rgba(255, 255, 255, 0.30);
+
+      border-radius: 5px;
+
+      color: #8b8a8a;
+
+      font-size: 7px;
+
+      letter-spacing: 0.03em;
+  }
+
+  .links {
+    display: none;
+    gap: clamp(20px, 1.8vw, 26px);
+    font-size: clamp(15px, 1.05vw, 19px);
+    color: var(--nav);
+
+    a {
+      color: inherit;
+      text-decoration: none;
+      transition: color 0.2s ease;
+      &:hover,
+      &:focus-visible {
+        color: var(--ink);
+      }
+    }
+
+    @media (min-width: 860px) {
+      display: flex;
+    }
+  }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    background: var(--pill);
+    color: var(--pill-ink);
+    text-decoration: none;
+    font-weight: 500;
+    white-space: nowrap;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+
+    &:hover,
+    &:focus-visible {
+      transform: translateY(-1px);
+      opacity: 0.92;
+    }
+  }
+
+  .pill-nav {
+    display: none;
+    padding: 14px 30px;
+    font-size: clamp(15px, 1.1vw, 20.6px);
+
+    @media (min-width: 860px) {
+      display: inline-flex;
+    }
+  }
+
+  // --------------------------------------------------------
+  // Hero
+  // --------------------------------------------------------
+  .hero {
+    position: relative;
+    z-index: 2;
+    padding: clamp(60px, 20vh, 230px) clamp(20px, 5vw, 75px) 0;
+    max-width: 760px;
+  }
+
+  .headline {
+    display: flex;
+    flex-direction: column;
+    font-weight: 400;
+    font-size: clamp(34px, 6vw, 71.6px);
+    line-height: 1.12;
+    letter-spacing: 0.01em;
+    color: var(--ink);
+    margin: 0;
+  }
+
+  .sub {
+    display: flex;
+    flex-direction: column;
+    margin: 24px 0 0;
+    font-size: clamp(15px, 1.2vw, 20.7px);
+    line-height: 1.35;
+    color: var(--muted);
+    word-spacing: 1px;
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 28px;
+    margin-top: 40px;
+  }
+
+  .pill-cta {
+    padding: 15px 32px;
+    font-size: clamp(15px, 1.1vw, 20.6px);
+  }
+
+  .ghost {
+    font-size: clamp(15px, 1.05vw, 20.6px);
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    color: #fff;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s ease;
+
+    &:hover,
+    &:focus-visible {
+      border-color: rgba(255, 255, 255, 0.4);
+    }
+  }
+
+  // --------------------------------------------------------
+  // Partner logo strip
+  // --------------------------------------------------------
+  .logos {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 28px;
+    max-width: 741px;
+    margin: 0 auto;
+    padding: clamp(40px, 6vh, 70px) 20px clamp(24px, 4vh, 40px);
+    color: var(--strip);
+
+    @media (min-width: 600px) {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .lg {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: center;
+    animation: fade 1.1s ease 0.34s both;
+
+    .mark {
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      border: 2px solid currentColor;
+      flex: none;
+    }
+
+    .word {
+      font-family: "IpsumMark", "Manrope", sans-serif;
+      font-weight: 700;
+      font-size: clamp(13px, 1vw, 18.5px);
+    }
+
+    .dot {
+      display: inline-block;
+      width: 0.35em;
+      height: 0.35em;
+      margin-left: 0.06em;
+      vertical-align: 0.62em;
+      border-radius: 50%;
+      background: currentColor;
+    }
+  }
+}
+
+// ============================================================
+// Entrance animation
+// ============================================================
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.hero {
+  animation: rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.06s both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stage * {
+    animation: none !important;
+    transition: none !important;
+  }
+}

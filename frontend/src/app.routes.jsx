@@ -4,7 +4,7 @@ import Register from './features/auth/pages/Register'
 import Login from './features/auth/pages/Login'
 import Dashboard from "./features/goal/pages/Dashboard";
 import Protected from "./features/auth/components/Protected";
-
+import NotFound from "./features/pages/notFound"
 
 export const router =  createBrowserRouter([
     {
@@ -22,6 +22,10 @@ export const router =  createBrowserRouter([
     {
         path:"/dashboard",
         element: <Protected> <Dashboard/></Protected>    
+    },
+    {
+        path:"*",
+        element:<NotFound/> 
     }
 
 ])
