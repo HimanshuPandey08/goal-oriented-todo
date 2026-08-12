@@ -1,15 +1,26 @@
 import { useState } from "react"
-import { Link } from "react-router"
+import { Link, useNavigate } from "react-router"
 import "../auth.form.scss"
+import { useAuth } from "../hooks/useAuth"
+
 
 const Register = () => {
+
+    const {loading ,handleRegister }= useAuth()
+    const navigate = useNavigate()
 
     const [username, setUsername] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
-    const handleForm = (e)=>{
+    const handleForm = async (e)=>{
         e.preventDefault()
+        await handleRegister({username,email,password})
+        navigate("/dashboard")
+    }
+
+    if(loading){
+        return <main> <h1>Loading .... </h1></main>
     }
 
     return (

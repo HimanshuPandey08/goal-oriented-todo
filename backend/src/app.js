@@ -7,13 +7,19 @@ const goalRouter = require("./routes/goal.routes")
 const milestoneRouter = require("./routes/milestone.routes")
 const taskRouter = require("./routes/task.routes")
 
+
+const cors = require("cors")
+
 const app = express();
 
 
 
 app.use(express.json())
 app.use(cookieParser())
-
+app.use(cors({
+    origin:process.env.CLIENT_URL,
+    credentials:true
+}))
 
 
 
