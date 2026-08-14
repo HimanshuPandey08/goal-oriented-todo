@@ -2,6 +2,7 @@ import { useState } from "react"
 import { Link } from "react-router"
 import "../auth.form.scss"
 import "../styles/login.scss"
+import "../../../styles/loading.scss"
 import { useAuth } from "../hooks/useAuth"
 import { useNavigate } from "react-router"
 
@@ -29,7 +30,35 @@ const Login = () => {
     }
 
     if(loading){
-        return <main> <h1>Loading .... </h1></main>
+        return (
+        <main className="auth-loading">
+            <div className="loading-animation">
+                <div className="loading-body">
+                    <span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </span>
+
+                    <div className="loading-base">
+                        <span></span>
+                        <div className="loading-face"></div>
+                    </div>
+                </div>
+
+                <div className="loading-lines">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+
+                <p>Reaching There...</p>
+            </div>
+        </main>
+    )
+        
     }
 
     return (
